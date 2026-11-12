@@ -1,0 +1,327 @@
+/* style.css: the look of the manual.
+ *
+ * Two visual directions to review (switch at the bottom of Home):
+ *   A "Old map":  parchment colours, a classic serif for headings, map with a compass.
+ *   B "Clean":    plain neutral colours, rounded system font.
+ * Each has a light and a dark version (follows the phone's setting).
+ * Red is used only for "Something's wrong" and calling for help.
+ *
+ * Colours are named values ("variables") so each style just swaps them.
+ */
+
+/* ---------- A: Old map ---------- */
+:root[data-style="a"] {
+  --bg: #f3ead7; --surface: #fbf6ea; --line: #d9ccb0;
+  --text: #2a2118; --muted: #6f604c;
+  --accent: #2f5d50; --on-accent: #fbf6ea;
+  --red: #b3261e; --on-red: #fff;
+  --room: #efe3c8; --room-hl: #e2b866; --wall: #3b2f22; --terrace: #e2e6cf;
+  --display: "Iowan Old Style", "Palatino", Georgia, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-style="a"] {
+    --bg: #1a150f; --surface: #251e16; --line: #3d3225;
+    --text: #efe4cc; --muted: #b3a387;
+    --accent: #8cc2ad; --on-accent: #10221c;
+    --red: #e05a4f; --on-red: #1a0b09;
+    --room: #2e261c; --room-hl: #8a6a2c; --wall: #e6d6b5; --terrace: #262b1f;
+  }
+}
+
+/* ---------- B: Clean ---------- */
+:root[data-style="b"] {
+  --bg: #f4f5f7; --surface: #ffffff; --line: #dfe2e7;
+  --text: #15171a; --muted: #5f6672;
+  --accent: #2d62d6; --on-accent: #fff;
+  --red: #c62828; --on-red: #fff;
+  --room: #e8ecf2; --room-hl: #9db8f2; --wall: #2a2f38; --terrace: #e3efe3;
+  --display: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-style="b"] {
+    --bg: #0f1115; --surface: #1a1d23; --line: #2c313a;
+    --text: #eef0f3; --muted: #a2a9b5;
+    --accent: #7ea6ff; --on-accent: #0b1430;
+    --red: #ff6b5e; --on-red: #2a0805;
+    --room: #20252e; --room-hl: #3b5aa3; --wall: #d8dde6; --terrace: #1d2a20;
+  }
+}
+
+/* ---------- Basics ---------- */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 18px/1.45 -apple-system, system-ui, sans-serif;
+  /* Leave room for the bottom bar and the iPhone's home indicator */
+  padding-bottom: calc(84px + env(safe-area-inset-bottom));
+}
+main, .lock { max-width: 560px; margin: 0 auto; padding: calc(16px + env(safe-area-inset-top)) 16px 24px; }
+h1, h2, .brand { font-family: var(--display); line-height: 1.15; }
+h1 { font-size: 30px; margin: 8px 0 4px; }
+h2 { font-size: 21px; margin: 28px 0 10px; }
+a { color: var(--accent); }
+[hidden] { display: none !important; }
+.icon { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- Password screen ---------- */
+.lock { padding-top: 64px; }
+.lock .brand { font-size: 40px; margin-bottom: 28px; }
+.lock input {
+  width: 100%; min-height: 56px; font-size: 18px; padding: 0 16px; margin-bottom: 12px;
+  border-radius: 14px; border: 2px solid var(--line); background: var(--surface); color: var(--text);
+}
+.lock .btn { width: 100%; border: 0; }
+.error { color: var(--red); min-height: 1.5em; }
+
+/* ---------- Headers ---------- */
+.top { margin-bottom: 16px; }
+.top.sub h1 { margin-top: 4px; }
+.brand { font-size: 30px; margin: 8px 0 0; letter-spacing: -0.01em; }
+:root[data-style="a"] .brand { font-style: italic; }
+.hint, .kicker { color: var(--muted); margin: 0; font-size: 16px; }
+.back { display: inline-flex; align-items: center; min-height: 48px; font-size: 17px; text-decoration: none; font-weight: 600; }
+
+/* ---------- Buttons (all at least 56px tall: easy to hit) ---------- */
+.btn {
+  display: flex; align-items: center; gap: 14px; min-height: 60px; padding: 12px 18px;
+  border-radius: 16px; font-size: 19px; font-weight: 600; text-decoration: none; font-family: inherit;
+  background: var(--surface); color: var(--text); border: 2px solid var(--line);
+}
+.btn span { display: flex; flex-direction: column; }
+.btn small { font-weight: 400; font-size: 15px; opacity: .85; }
+.btn-main { background: var(--accent); color: var(--on-accent); border-color: transparent; justify-content: center; }
+.btn-problem { background: var(--surface); color: var(--text); }
+.btn-problem .icon { color: var(--accent); }
+.btn-call { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+.btn-quiet { background: transparent; }
+.btn-link { margin-top: 14px; font-size: 17px; min-height: 52px; color: var(--accent); }
+.disabled { opacity: .6; }
+.list { display: grid; gap: 10px; }
+
+/* ---------- Search ---------- */
+.searchbox {
+  display: flex; align-items: center; gap: 10px; padding: 0 16px; min-height: 58px; margin: 12px 0 8px;
+  border-radius: 16px; background: var(--surface); border: 2px solid var(--line); color: var(--muted);
+}
+.searchbox input { flex: 1; border: 0; background: none; font-size: 18px; color: var(--text); min-height: 54px; outline: none; }
+#results { margin-top: 8px; }
+#sos { margin-top: 16px; }  /* space between search and the problem buttons */
+.row {
+  display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 10px 16px;
+  border-radius: 14px; background: var(--surface); color: var(--text); text-decoration: none; border: 1px solid var(--line);
+}
+.row span { display: flex; flex-direction: column; }
+.row small { color: var(--muted); font-size: 15px; }
+/* One colour per kind of entry, used everywhere */
+.row-problem .icon { color: var(--accent); }
+.row-thing .icon { color: var(--accent); }
+.row-contact .icon { color: var(--muted); }
+.empty { color: var(--muted); text-align: center; padding: 24px 8px; }
+:root[data-style="a"] .empty { font-family: var(--display); font-style: italic; font-size: 20px; }
+
+/* ---------- Item page ---------- */
+.where { display: flex; gap: 10px; align-items: flex-start; font-size: 20px; font-weight: 600; margin: 4px 0 16px; }
+.where .icon { color: var(--accent); margin-top: 3px; }
+.body { margin: 16px 0; }
+figure { margin: 0 0 14px; }
+.photo img, .photo video { width: 100%; border-radius: 14px; display: block; background: var(--surface); }
+.placeholder {
+  display: flex; gap: 14px; align-items: center; padding: 22px 18px; border-radius: 14px;
+  border: 2px dashed var(--line); color: var(--muted); background: var(--surface);
+}
+.placeholder .icon { width: 34px; height: 34px; }
+.placeholder figcaption { display: flex; flex-direction: column; font-size: 15px; }
+.placeholder b { color: var(--text); font-size: 16px; }
+.breakers { width: 100%; border-collapse: collapse; }
+.breakers th { text-align: left; vertical-align: top; padding: 10px 12px 10px 0; font-size: 18px; white-space: nowrap; }
+.breakers td { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.breakers tr:first-child td { border-top: 1px solid var(--line); }
+.breakers small { display: block; color: var(--muted); font-size: 15px; }
+.mini { display: block; }
+
+/* ---------- Floor plan (the SVG brings its own classes: room, wall, label...) ---------- */
+.plan svg { width: 100%; height: auto; display: block; }
+.plan .room { fill: var(--room); transition: fill .15s; }
+.plan .wall { stroke: var(--wall); }
+.plan .terrace { fill: var(--terrace); }
+.plan .label { fill: var(--text); }
+.plan .num { fill: var(--muted); }
+.plan text { pointer-events: none; }                 /* taps go through labels to the room */
+.plan.interactive [id^="room-"] { cursor: pointer; }
+.hl-hallway #room-hallway, .hl-bathroom #room-bathroom, .hl-wc #room-wc, .hl-green #room-green,
+.hl-bedroom #room-bedroom, .hl-living #room-living, .hl-terrace #room-terrace { fill: var(--room-hl); }
+.edge-label { font: italic 600 12px var(--display); fill: var(--red); }
+.map-wrap { position: relative; }
+:root[data-style="a"] .map-wrap { padding: 10px; border-radius: 18px; background: var(--surface); border: 1px solid var(--line); }
+.compass { position: absolute; right: 18px; bottom: 18px; width: 64px; height: 64px; }
+.compass circle { fill: none; stroke: var(--muted); stroke-width: 2; }
+.compass path { fill: var(--muted); }
+.compass .n { fill: var(--red); }
+.compass .cn { font: 700 14px var(--display); fill: var(--text); text-anchor: middle; }
+
+/* Map bottom panel */
+.sheet {
+  position: fixed; left: 0; right: 0; bottom: calc(68px + env(safe-area-inset-bottom));
+  max-height: 55vh; overflow: auto; padding: 8px 16px 16px;
+  background: var(--surface); border-top: 1px solid var(--line); border-radius: 22px 22px 0 0;
+  box-shadow: 0 -10px 30px rgba(0,0,0,.18); animation: up .2s ease-out;
+}
+@keyframes up { from { transform: translateY(40px); opacity: 0; } }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; }
+.sheet-head h2 { margin: 10px 0; }
+.close { display: grid; place-items: center; width: 48px; height: 48px; text-decoration: none; color: var(--muted); font-size: 22px; }
+
+/* ---------- Guide ---------- */
+.guide { margin-bottom: 8px; }
+.progress { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 15px; font-weight: 600; margin-bottom: 14px; }
+.progress .bar { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--accent); }
+/* Guide steps stay plain and serious: body font, no jokes */
+.step-text { font: 600 26px/1.3 -apple-system, system-ui, sans-serif; margin: 6px 0 18px; }
+.step-text a { color: inherit; }
+/* Notes under a step ("What to look for", "If it doesn't work"): always visible */
+.note { margin: 6px 0 14px; padding: 14px 16px; border-radius: 14px; background: var(--surface); border-left: 5px solid var(--accent); }
+.note b { display: block; font-size: 15px; color: var(--muted); margin-bottom: 4px; }
+.note p { margin: 0; }
+.note .btn-link { margin-top: 10px; }
+/* Done/Next pinned to the bottom of the screen; app.js adds empty space under the page so it never covers anything */
+.step-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  padding: 12px max(16px, calc((100vw - 560px) / 2 + 16px)) calc(12px + env(safe-area-inset-bottom));
+  background: var(--bg); border-top: 1px solid var(--line);
+}
+.step-nav .end-q { margin: 2px 0 10px; }
+/* Inside guides: no tab bar (Home is in the top corner), so no room kept for it */
+body[data-screen="guide"] .tabbar { display: none; }
+body[data-screen="guide"] { padding-bottom: 0; }
+.guide-links { display: flex; justify-content: space-between; }
+/* Photos in steps: shrunk by app.js to fit the screen, kept centred and in proportion */
+main .photo img { cursor: zoom-in; }
+body[data-screen="guide"] .photo img, body[data-screen="guide"] .photo video { width: auto; max-width: 100%; margin: 0 auto; }
+/* Full-screen photo after a tap */
+.zoom {
+  position: fixed; inset: 0; z-index: 20; background: #000; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12px; padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+}
+.zoom img { max-width: 100%; max-height: calc(100% - 40px); object-fit: contain; }
+.zoom span { color: #aaa; font-size: 15px; }
+.btn-next { font-size: 21px; min-height: 64px; }
+.call { display: grid; gap: 8px; margin-bottom: 14px; }
+.detail { display: flex; flex-direction: column; margin: 0; padding: 8px 4px; }
+.detail small { color: var(--muted); font-size: 14px; }
+.detail b { font-size: 22px; letter-spacing: .03em; }
+
+/* ---------- Contacts ---------- */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 4px 16px 16px; margin-bottom: 14px; display: grid; gap: 10px; }
+.card h2 { margin: 12px 0 0; }
+.card .role { margin: 0; color: var(--muted); }
+.card .body { margin: 4px 0 0; font-size: 16px; }
+
+/* ---------- Bottom bar ---------- */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-around;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  background: var(--surface); border-top: 1px solid var(--line);
+}
+.tabbar a {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 56px; justify-content: center;
+  color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600; text-align: center; line-height: 1.15;
+}
+.tabbar a.on { color: var(--accent); }
+
+/* Pins on the floor plan */
+.pin path { fill: var(--red); stroke: #fff; stroke-width: 2; }
+.pin circle { fill: #fff; }
+
+/* Pin page (#/pins) */
+.pick { width: 100%; min-height: 56px; font-size: 18px; padding: 0 12px; margin-bottom: 12px; border-radius: 14px; border: 2px solid var(--line); background: var(--surface); color: var(--text); }
+.list.two { grid-template-columns: 1fr 1fr; margin-top: 12px; }
+.out { width: 100%; font: 15px/1.4 ui-monospace, monospace; padding: 12px; border-radius: 14px; border: 2px solid var(--line); background: var(--surface); color: var(--text); margin-bottom: 12px; }
+#pin-map svg { cursor: crosshair; }
+
+/* Temporary style switch for the review */
+.review { margin-top: 40px; text-align: center; color: var(--muted); font-size: 14px; }
+.review button { min-width: 48px; min-height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--text); font-weight: 700; }
+
+.related { margin-top: 20px; }  /* space above the problem buttons on item pages */
+
+ul.body { padding-left: 22px; }
+ul.body li { margin: 6px 0; }
+
+/* Room view on the map: numbered pins match the numbers in the list below */
+.map-wrap .plan svg { max-height: 50vh; width: auto; max-width: 100%; margin: 0 auto; }
+.pin-num circle { fill: var(--accent); stroke: #fff; stroke-width: 1.5; }
+.pin-num text { fill: var(--on-accent); font-weight: 700; text-anchor: middle; dominant-baseline: central; font-family: -apple-system, system-ui, sans-serif; }
+.room-list { margin-top: 14px; }
+.row .num { display: grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 16px; }
+
+/* Map search: results stay above the map; at most ~3 rows tall so the map stays in view */
+.map-results { max-height: 236px; overflow: auto; margin-bottom: 10px; }
+button.row { width: 100%; font: inherit; text-align: left; cursor: pointer; }
+.row.picked { border: 2px solid var(--accent); }
+.picked-info { margin: 4px 0 10px; display: grid; gap: 8px; }
+.picked-info .where { margin: 0; }
+.picked-info .where span { display: flex; flex-direction: column; }
+.picked-info .where small { font-weight: 400; font-size: 16px; color: var(--muted); }
+/* Room list: rows with their own page look like buttons ("Details ›");
+   simple things are plain text without a card, so it's clear they don't open anything */
+.row.has-page { border: 2px solid var(--accent); }
+.row .details { margin-left: auto; display: flex; font-style: normal; align-items: center; gap: 2px; padding: 6px 8px 6px 12px;
+  border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 15px; font-weight: 700; flex: none; }
+.row .details .icon { width: 18px; height: 18px; color: inherit; }
+.row.no-page { background: transparent; border-color: transparent; }
+.row .note-inline { margin-top: 2px; }
+
+/* Name tag above a pin picked in the map search; blue when it opens a page */
+.pin-tag rect { fill: var(--surface); stroke: var(--text); stroke-width: 1.5; }
+.pin-tag text { fill: var(--text); font: 700 16px -apple-system, system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; }
+.pin-tag.link rect { fill: var(--accent); stroke: none; }
+.pin-tag.link text { fill: var(--on-accent); }
+
+/* Call card on guide screens: one company, its call button and its policy number together */
+.call-card { display: grid; gap: 10px; padding: 4px 16px 14px; margin-bottom: 14px; border-radius: 18px; background: var(--surface); border: 2px solid var(--line); }
+.call-card h2 { margin: 12px 0 0; }
+.call-card .ask { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+.call-card .detail { padding: 0; }
+
+/* Question at the end of a guide */
+.end-q { font: 700 22px/1.3 -apple-system, system-ui, sans-serif; margin: 22px 0 12px; }
+
+/* "What to say" screen: the call script in big letters, one sentence group per paragraph. */
+.script { margin-top: 18px; font-size: 24px; line-height: 1.45; }
+.script p { margin: 0 0 18px; }
+.script .or { font-size: 16px; color: var(--muted); margin: -6px 0 12px; }
+
+/* Room view: one numbered block per spot; several things at one spot are listed inside it */
+.pin-count circle { fill: #ffd600; stroke: #191919; stroke-width: 1; }
+.pin-count text { fill: #191919; font-weight: 700; text-anchor: middle; dominant-baseline: central; font-family: -apple-system, system-ui, sans-serif; }
+.row.spot { align-items: flex-start; }
+.spot-things { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.spot-thing { display: flex; align-items: center; gap: 10px; padding: 8px 0; color: inherit; text-decoration: none; }
+.spot-thing + .spot-thing { border-top: 1px solid var(--line); }
+.spot-thing > span { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.spot-thing small { color: var(--muted); font-size: 15px; }
+.spot-thing .details { flex: none; }
+
+/* Contacts: shortcut buttons on top, group headings, short cards */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 6px; }
+.chip { border: 2px solid var(--accent); color: var(--accent); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 16px; text-decoration: none; }
+.group-head { font-size: 15px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 22px 0 8px; scroll-margin-top: 12px; }
+.details-btn { color: var(--accent); }
+.details-btn .icon { width: 18px; height: 18px; }
+
+/* A contact's own page: even space between the buttons and blocks */
+.stack { display: grid; gap: 10px; }
+.stack > * { margin-top: 0; margin-bottom: 0; }
+.stack .group-head { margin-top: 12px; }
+
+/* Photo on a question screen: kept small so the answer buttons stay on screen */
+.q-photo img { width: auto; max-width: 100%; max-height: 28vh; margin: 0 auto; }
+
+/* Dogs: a random dog photo on the "All fixed" and "wait" screens, and a small round one on the home screen. */
+.dog { margin: 4px 0 16px; }
+.dog img { width: 100%; max-height: 42vh; object-fit: cover; border-radius: 16px; display: block; background: var(--surface); }
+.home-top { display: flex; align-items: center; gap: 14px; }
+.home-top .brand { margin: 0; }
+.dog-round { width: 64px; height: 64px; flex: none; border-radius: 50%; object-fit: cover; background: var(--surface); }
